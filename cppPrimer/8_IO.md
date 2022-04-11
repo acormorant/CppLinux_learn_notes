@@ -17,6 +17,7 @@
  >iostream::failbit; cin.failbit;//表示一个 IO 操作失败了，是可恢复错误。修正后流可以继续使用。
  >iostream::eofbit; cin.eofbit;//表示流到达了文件结束
  >iostream::goodbit;//表示流未处于错误状态
+ 
  **我们将流作为条件使用的代码就等于!fail().**
  而eof和bad操作只能表示特定的错误.
 
@@ -170,51 +171,53 @@ int main(int argc,char *argv[]){
 
 ```
 
-
 [c++输入文件流ifstream用法详解](https://blog.csdn.net/sinat_36219858/article/details/80369255)
+
+### 文件模式
+每次打开文件都以某种模式打开，如未指定即以该文件流类型的默认模式打开。
+每个流都有一个关联的文件模式，用来指出如何使用文件
+>in：以只读方式打开
+out：以只写方式打开
+app：每次写操作前均定位到文件末尾
+ate：打开文件后即定位到文件末尾
+trunc：截断文件
+binary：以二进制方式进行 IO
+
+- **文件模式的使用：**
+   - 每个流对象都有默认的文件模式，ifstream 默认 in 模式打开文件，ofstream 默认 out，fstream 默认 in 和 out。
+   - 对 ifstream 对象不能设置 out 模式，对 ofstream 对象不能设置 in 模式
+   - 只有设置了 out 才能设置 trunc 模式，**只设置 out 模式会默认也设置 trunc 模式**
+   - 设置了 trunc 就不能再设置 app 模式
+   - **默认情况下以 out 模式打开文件会使文件内容被清空，如果要保留文件内容需要同时指定 app 模式或 in 模式。**
+   - app 模式下，会将写入的数据追加写到文件末尾
+```cpp
+ofstream fout("file1.txt");                                  // 以输出模式打开文件并截断文件（即清空文件内容）
+ofstream fout("file1.txt", ofstream::app);                   // 显示指定 app 模式（+隐含的 out 模式）
+ofstream fout("file1.txt", ofstream::app | ofstream::out);   // 同上，只是将 out 模式显式地指定了一下。
+fout.open("file1.txt", ofstream::out);
+```
+
 ## 8.3 string流
 | 类 | 作用 |
 | ------ | -------- |
 | istringstream | 从string读取数据 |
 | ostringstream | 向string写入数据 |
 | stringstream | 既可从string读数据也可以向string写数据 |	
+sstream 定义了 istringstream, ostringstream, stringstream 来读写 string。
+- sstream 定义和初始化
 ```cpp
-    // will hold a line and word from input, respectively
-	string line, word;
-
-	// will hold all the records from the input
-	vector<PersonInfo> people;
-
-	// read the input a line at a time until end-of-file (or other error)
-	while (getline(is, line)) {       
-		PersonInfo info;            // object to hold this record's data
-	    istringstream record(line); // bind record to the line we just read
-		record >> info.name;        // read the name
-	    while (record >> word)      // read the phone numbers 
-			info.phones.push_back(word);  // and store them
-		people.push_back(info); // append this record to people
-	}
-	// for each entry in people
-	for (vector<PersonInfo>::const_iterator entry = people.begin();
-				entry != people.end(); ++entry) {    
-		ostringstream formatted, badNums; // objects created on each loop
+ stringstream strm();     // 定义一个未绑定的 stringstream 对象
+ stringstream strm(s);    // 定义一个 stringstream 对象 strm，strm 中保存着 string s 的拷贝。
 ```
+
+### 8.3.1 使用istringstream
+- stringstream 特有操作
 ```cpp
-
-		// for each number
-		for (vector<string>::const_iterator nums = entry->phones.begin();
-				nums != entry->phones.end(); ++nums) {  
-			if (!valid(*nums)) {           
-				badNums << " " << *nums;  // string in badNums
-			} else                        
-				// ``writes'' to formatted's string
-				formatted << " " << format(*nums); 
-		}
-		if (badNums.str().empty())      // there were no bad numbers
-			os << entry->name << " "    // print the name 
-			   << formatted.str() << endl; // and reformatted numbers 
-		else                   // otherwise, print the name and bad numbers
-			cerr << "input error: " << entry->name 
-			     << " invalid number(s) " << badNums.str() << endl;
-	}
+strm.str();   // 返回 strm 中保存的 str 的拷贝
+strm.str(s);  // 将 string s 拷贝到 strm 中，返回 void
 ```
+
+### 8.3.2 使用ostringstream
+理解：
+1.istringstream 是输入流，即读操作，要将流中的内容输入到字符串中，因此**定义和使用 istringstream 时流内必须有内容，所以在使用前要提前在流内保存一个字符串.**
+2.ostringstream 是输出流，即写操作，将流中的内容输出到字符串中，ostringstream **可以在定义时即在流中保存一个字符串，也可以通过 << 操作符获得字符串。**
