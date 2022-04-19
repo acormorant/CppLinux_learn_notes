@@ -1,6 +1,6 @@
     练习8.2.1节 文件输入输出
     练习8.2.2节 file mode
-    练习8.11 8.12 8.13 i/o stringstream
+    练习8.10 8.11 8.12 8.13 i/o stringstream
 
 
 ## 8.1 IO类
@@ -8,7 +8,7 @@
  >继承关系使我们可以声明一个特定的类继承自另一个类.
  >我们通常可以将一个派生类对象当作其基类对象来使用.
 
-2.**IO对象无法拷贝或复制**。进行IO操作的函数通常以引用方式传递和返回流。
+2.**IO对象无法拷贝或复制**。进行IO操作的函数通常以==引用==方式传递和返回流。
 
 3.IO类定义了一些函数和标志,帮助访问和操纵流的**条件状态**.
 
@@ -47,7 +47,7 @@
 - fstream 特有操作
  ```cpp
  getline(ifs, s);         // 从一个输入流 ifs 读取一行字符串存入 s 中
- fs.open('data.ext');     // 将 fs 与文件 data.txt 绑定并打开该文件。如果已打开会发生错误。
+ fs.open('data.txt');     // 将 fs 与文件 data.txt 绑定并打开该文件。如果已打开会发生错误。
  fs.close();              // 关闭 fs 绑定的文件。
  fs.is_open();            // 返回一个 bool 值，指出关联文件是否成功打开。
  ```
@@ -58,7 +58,7 @@
  当文件关闭后，可以将文件流关联到另一个文件。
  当一个 fstream 对象被销毁时，close 函数会自动被调用。
 
-- **用 fstream 代替 iostream**
+- **用 fstream 代替 iostream类型的引用**(==?==)
  使用 iostream 类型的引用作为函数参数的地方，都可以使用 fstream 来代替。
 
 ###实例 T8_7
@@ -73,7 +73,7 @@
 
 - 编译后生成.exe文件,我们可以在集成终端打开exe文件,向该文件传递参数
  PS C:\Users\cormorant\Desktop\v\C\cpp\cppexe> **.\t8_6** InFile.txt outfile.txt
-- 文件名不分大小写
+- **文件名不分大小写**
   - 指定c风格字符串时两种格式都成功.
   ```cpp
      (ifstream input;
@@ -103,7 +103,7 @@
       //argv[1] is: infile.txt
      )
 	```
-  - **使用接受istream&类型函数时无法用其对应ifstream调用**
+  - **使用接受istream&类型函数时无法调用其对应ifstream对象**
     ```cpp
      std::istream &read(std::istream &is, Sales_data&item)
      read(input,total)
@@ -211,13 +211,116 @@ sstream 定义了 istringstream, ostringstream, stringstream 来读写 string。
 ```
 
 ### 8.3.1 使用istringstream
+- 当我们某些工作是对整行文本进行处理,而其他一些工作是处理行内的单个单词时,通常可以使用istringstream.
 - stringstream 特有操作
 ```cpp
 strm.str();   // 返回 strm 中保存的 str 的拷贝
 strm.str(s);  // 将 string s 拷贝到 strm 中，返回 void
 ```
+>strm.clear();／／重复使用字符串流时，每次都要调用clear
 
 ### 8.3.2 使用ostringstream
+- 当我们逐步构造输出，希望最后一起打印时，ostringstream是很有用的。
 理解：
 1.istringstream 是输入流，即读操作，要将流中的内容输入到字符串中，因此**定义和使用 istringstream 时流内必须有内容，所以在使用前要提前在流内保存一个字符串.**
 2.ostringstream 是输出流，即写操作，将流中的内容输出到字符串中，ostringstream **可以在定义时即在流中保存一个字符串，也可以通过 << 操作符获得字符串。**
+
+### T8_10 
+**将来自一个文件中的行保存在一个vector＜string＞中。然后使用一个istringstream从vector 读取数据元素，每次读取一个单词。**
+```cpp
+string cstr="infile.txt";
+int main(){
+    ifstream in(cstr);
+    if(!in){
+        cerr<<"无法打开文件\n";
+        return -1;
+    }
+    string line;
+    vector<string> vstr;
+    while (getline(in,line))
+    {
+         vstr.push_back(line);
+    }
+    in.close();
+    for(auto stritem:vstr){
+        //保存string stritem的一个拷贝
+        istringstream line(stritem);
+        string word;
+        //遍历vector对象 每次读取一个单词
+        while (line>>word)
+        {
+            cout<<word<<"---";
+        }
+        cout<<endl;
+        
+    }
+    return 0;
+}
+```
+
+### T8_13 电话号码程序
+>考虑这样一个例子，假定有一个文件，列出了一些人和他们的电话号码。某些人只有一个号码，而另一些人则有多个—家庭电话、工作电话、移动电话等。
+>文件中每条记录都以一个人名开始，后面跟随一个或多个电话号码。
+>逐个验证电话号码并改变其格式。如果所有号码都是有效的，我们希望输出一个新的文件，包含改变格式后的号码。对于那些无效的号码，我们不会将它们输出到新文件中，而是打印一条包含人名和无效号码的错误信息。
+```cpp
+struct PersonInfo
+{
+    string name;
+    vector<string> phones;
+
+};
+
+string format(const string &s){return s;}
+
+bool valid(const string &s){
+// 如何验证电话号码将在第17章介绍
+//现在简单返回true
+return true;
+}
+
+string sfile="data.txt";
+int main(){
+    string line,word;
+    vector<PersonInfo> people;
+    ifstream in(sfile);
+    istringstream record;
+    if(!in){
+        cerr<<"无法打开文件\n";
+        return -1;
+    }
+
+    while(getline(in,line)){
+       PersonInfo info;
+       record.clear();   // 重复使用字符串流时，每次都要调用clear
+       record.str(line); // 将记录绑定到刚读入的行 
+       //以单词为单位读取名字和电话号码
+       record >> info.name; 
+       while (record >> word)
+       {
+           info.phones.push_back(word);
+       }
+       people.push_back(info); //将此记录追加到people末尾 
+       
+    }
+    ostringstream os;
+    for(const auto &entry:people){ //对people中每一项 
+        ostringstream formatted,badNums;
+        for(const auto &nums:entry.phones){ //对每个数
+            if(!valid(nums))
+            badNums<<" "<<nums;
+            else
+            formatted<<" "<<format(nums);
+        }
+            if(badNums.str().empty())//没有错误的数 
+            os<<entry.name<<" "//打印名字 
+            <<formatted.str()<<endl;//和格式化的数
+            else//否则，打印名字和错误的数
+              cerr<<"input error:"<<entry.name
+              <<" invalid number(s) "<<badNums.str()<< endl; 
+        }
+    cout << os.str() <<endl; return 0;
+    return 0;
+        
+    
+}
+```
