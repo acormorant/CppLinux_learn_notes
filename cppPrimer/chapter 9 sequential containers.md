@@ -140,4 +140,106 @@ array 是一种==比内置数组更好==的类型。
    - 如果可以通过排序解决，就像插到尾部，而后排序
    - **在输入阶段用 list ，输入完成后拷贝到 vector 中**
 
-### 
+### 9.2 容器库概览
+- 通用容器操作
+```cpp
+ '类型别名'
+iterator
+const_iterator
+value_type           // 容器元素类型。定义方式： vector<int>::value_type
+reference            // 元素类型的引用。定义方式： vector<int>::reference
+const_reference      // 元素的 const 左值类型
+
+'构造函数'-'三种通用的构造函数：同类拷贝、迭代器范围初始化、列表初始化'
+C c1(c2);            // 拷贝构造函数，容器类型与元素类型必须都相同
+C c1(c2.begin(),c2.end());   // 要求两种元素类型可以转换即可。
+C c1{a,b,c,...};    // 使用初始化列表，容器的大小与初始化列表一样大
+
+C c(n);             // 这两种接受大小参数的初始化方式只有顺序容器能用，且 string 无法使用
+C c(n,t);
+
+'赋值与swap'
+c1 = c2;
+c1 = {a,b,c,....}
+a.swap(b);
+swap(a, b);         // 两种 swap 等价
+
+'大小'
+c.size();
+c.max_size();       // c 可以保存的最大元素数目，是整个内存层面的容量，不是已分配内存。不同于 caplity, caplity 只能用于 vector，queue，string
+c.empty();
+
+'添加/删除元素（不适用于array）'
+c.insert(args);    // 将 args 中的元素拷贝进 c
+c.emplace(inits);  // 使用 inits 构造 c 中的一个元素
+c.erase(args);     // 删除指定的元素
+c.clear();
+
+'关系运算符'
+==; !=; <; <=; >; >=   // 所有容器都支持相等和不等运算符。无序关联容器不支持大于小于运算符。
+
+'获取迭代器'
+c.begin(); c.end(); 
+c.cbegin(); c.cend();  // 返回 const_iterator
+
+'反向容器的额外成员'
+reverse_iterator       // 逆序迭代器，这是一个和 iterator 不同的类型
+const_reverse_iterator 
+c.rbegin();c.rend();
+c.crbegin();c.crend();
+```
+
+#### 9.2.1 迭代器
+ 用两个迭代器表示的范围都是==**左闭合空间**==，即 [begin,end)  ：**如果 begin 和 end 相等，则为空**。
+ **所有迭代器都可以递增，forward_list 不可以递减**
+```cpp
+vector<int>::iterator iter = vec.begin();   // 准确定义迭代器的方式。
+```
+
+#### 9.2.4 容器定义和初始化
+```cpp
+vector<const char*> articles = {"a", "an", "the"};
+list<string> words(articles.begin(), articles.end());  // 正确， const char* 类型可以转换成 string类型
+```
+- **array初始化**
+ **定义一个array，既需要指定元素类型，也需要==指定大小==**
+```cpp
+ array<int,42>;              // 定义一个有 42 个 0 的数组
+ array<int,42>::size_type;   // 定义数组类型也需要包括元素类型和大小
+```
+   - array的所有元素默认初始化为 0；
+   - array 列表初始化时，列表元素个数小于等于 array 大小，剩余元素默认初始化为 0 
+   - **array ==只能默认初始化或列表初始化==，如果定义的数组很大并且需要初始化，可以先默认初始化然后用 fill 函数填充值**。
+- array赋值
+ **不能对内置数组拷贝或赋值，但是 array 可以。**
+ **使用一个 array 对另一个 array 赋值**，需要两个array 元素类型与大小都相同。
+ 不能用花括号列表对 array 赋值（==只可以初始化==）
+
+#### 9.2.5 赋值和swap
+- **“=”赋值**
+  对容器使用赋值运算符（除 array 外），将会使该容器的==**所有元素**==被替换。**如果两个容器大小不等，==赋值后都与右边容器的原大小相同==。**
+  **array要求赋值前大小就必须一样。**
+- **assign**
+  assign 是赋值操作，可以用于顺序容器。
+  “=” 要求两边类型相同， assign 要求只要**可以转换**即可
+```cpp
+ lst.assign(vec.begin(), vec.end()); // 使用迭代器范围赋值
+ lst.assign(il);                     // il是一个花括号包围的元素值列表
+
+ lst.assign(n, t);                   // 将 lst 的元素替换为 n 个 t
+ '操作等价于'
+ lst.clear();
+ lst.insert(lst.begin(), n, t);
+```
+- **swap**
+   - 对 array ，swap 交换两个 array 中的元素值。**指针、引用和迭代器绑定的元素不变（值变）**。
+   - **对于其他容器，==swap 不交换元素，只交换数据结构，因此 swap 操作非常快==。**
+   - 对于 string，swap 后，指针、引用和迭代器会失效。**对于其他容器，交换后指针指向了另一个容器的相同位置。**
+   - ==建议统一使用 swap(a,b)==，而非 a.swap(b)
+   - 对于 array，swap 操作的时间与元素数目成正比，**对于其他容器，swap 操作的时间是常数**。
+
+#### 9.2.6 容器大小操作
+max_size 返回一个大于或等于该类型容器所能容纳的最大元素数的值。
+
+
+
