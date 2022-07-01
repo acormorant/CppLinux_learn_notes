@@ -201,7 +201,7 @@ CoreSW1(config-if)#standby 1 preempt
 CoreSW1(config-if)#standby 1 priority 105
 CoreSW1(config-if)#standby 1 track f0/1
 ```
-- **核心层交换机CoreSW2**
+- **核心层交换机 CoreSW2**
 ```r
 CoreSW2(config-if)#int vlan 10
 CoreSW2(config-if)#standby 1 ip 192.168.18.14
@@ -449,7 +449,7 @@ ConvergeSW2(config-if)#swithcport mode trunk
 
 ### 2.3.路由表
 #### 静态路由
-- **路由器R9**
+- **路由器 R9**
 ```r
 R9(config)#ip route 0.0.0.0 0.0.0.0 50.50.50.1
 R9(config)#ip route 10.0.1.0 255.255.255.0 192.168.88.1
@@ -463,7 +463,7 @@ R9(config)#ip route 192.168.18.128 255.255.255.240 192.168.66.6
 
 ### 2.4.DHCP
 [Cisco Packet Tracer中配置DHCP服务器](https://blog.csdn.net/qq_41745698/article/details/85019218)
-- **路由器R9**
+- **路由器 R9**
 ```r
 R9(config)#service dhcp
 R9(config)#ip dhcp pool 50                        //配置IP地址池的名称，并进入DHCPPool配置模式
