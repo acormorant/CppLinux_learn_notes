@@ -242,6 +242,7 @@ vector<int>::iterator iter = vec.begin();   // 准确定义迭代器的方式。
 
 #### 9.2.3 begin和end 成员
 Q:begin 和 cbegin两个函数有什么不同?
+
 cbegin是c++引入用来与auto结合使用,返回const_iterator迭代器而不管容器类型;
 begin是重载函数,依赖容器类型是否为const类型而返回对应迭代器.
 
@@ -381,8 +382,11 @@ max_size 返回一个大于或等于该类型容器所能容纳的最大元素�
 
 #### 9.3.3 删除元素
 **三类删除操作：pop/ erase/ clear**
+
 头尾删除返回 void，**`特定位置删除返回被删除元素之后元素的迭代器`**
+
 **vector/string 不支持 pop_front，forward_list 不支持 pop_back。**
+
 forward_list 有自己特殊版本的 erase。
 ```cpp
 c.pop_back();   // 注意没有返回值，如果想要需要提前保存
@@ -404,6 +408,7 @@ c.erase(b, e);  // !!!!! 删除迭代器范围 [b, e) 内的元素 若e本身就
 
 #### 9.3.4 特殊的forward_list操作
 forward_list 是**单向链表**，添加和删除操作都会**同时改变前驱和后继结点**，因此一般的添加和删除都不适用于 forward_list,因此原因,**forward_list中添加删除操作通过改变给定元素`之后的元素`来完成的。**
+
 forward_list 定义了 **首前迭代器** ：**before_begin()** 可以返回首前迭代器，用来删除首元素。
 ```cpp
 lst.insert_after(p,t);     // 在迭代器 p 之后添加一个元素 t；insert_after 与 insert 的差别只在于是插入在元素前还是元素后
@@ -421,8 +426,10 @@ lst.erase_after(b,e);      // !!!!! 删除迭代器返回 (b,e) 中的元素，�
 
 
 #### 9.3.5 改变容器大小
-==**resize() 用来增大或缩小容器。**==
+**resize() 用来增大或缩小容器。**
+
 如果要求的大小小于当前大小，**尾部会被删除**
+
 如果要求的大小大于当前大小，**会把新元素添加到尾部**
 ```cpp
 list<int> lst(10,42);  // 10 个 42
@@ -447,6 +454,7 @@ lst.resize(5);         // 把后面 20 个元素都删除
 ### 9.4 vector对象是如何增长的
 vector 和 string 是连续存储的，为了避免每增加一个元素就要重新分配一次空间，在每次必须获取新的内存空间时，**通常会分配比新的空间需求更大的内存空间**。容器预留多的空间作为备用。
 这种方法在实现时性能恨好，虽然**每次重新分配内存都要移动所有元素**，但是其**扩张操作通常比 list 和 deque 还快**。
+
 - **管理容量**
  **c.capacity(), c.reserve(), c.shrink_to_fit** 都适用于** vector 和 string**，c.shrink_to_fit 还另外适用于 deque。
 ```cpp
@@ -466,6 +474,7 @@ string 提供了一些额外的操作，主要是用于 **`C风格字符数组`*
 #### 9.5.1 构造string的其他方法
 ##### 构造string的基础方法
 **注意：string 不支持在初始化时接受一个数字以指定 string 的大小。**
+
 如果想要指定大小，可以先默认初始化，再**调用 resize() 函数调整大小**。
 ```cpp
 C c1(c2);           
@@ -499,8 +508,11 @@ string s2 = s1.substr(6);    // 返回从下标 6 开始到最后的子序列
 #### 9.5.2 改变string的其他方法
 string 支持顺序容器的 assign、insert、erase 操作，此外还增加了两个额外的操作
 1. **接受下标版本的 insert 和 erase**
-2. 接受 C 风格字符数组的 insert 和 assign
-3. **append 和 replace 函数**
+
+3. 接受 C 风格字符数组的 insert 和 assign
+
+5. **append 和 replace 函数**
+6. 
 ##### 接受下标的 insert 和 erase
 - insert 和 erase 接受下标的版本**返回的是一个指向 s 的引用**（区别于迭代器版本返回指向第一个插入字符的迭代器）。
 - insert 的所有版本都是第**一部分参数为 pos，后面的参数为待插入的字符**
@@ -512,6 +524,7 @@ s.erase(s.size()-5, 5);           // 从 s 删除最后 5 个字符
 ```
 ##### 接受 C 风格字符数组的 insert 和 assign
 **assign 的所有版本的参数都是要赋的值，由 起始位置 + 终止位置/长度 组成**
+
 **replace 的所有版本的参数都是第一部分参数为要删除的范围，第二部分为要插入的字符。**
 ```cpp
 const char* cp = "stately,plump Buck";
@@ -520,7 +533,8 @@ s.insert(s.size(), cp+7);    // 将从 cp+7 开始到 cp 末尾的字符插入�
 ```
 ##### append 和 replace
 **append：在 string 末尾进行插入操作的简写形式**
-**==replace==：调用 erase 和 insert 操作的简写形式**
+
+**replace：调用 erase 和 insert 操作的简写形式**
 ```cpp
 s.append(" 4th Ed.");        // 等价于 s.insert(s.size()," 4th Ed.");
 s.replace(11, 3, "Fifth");   // 从下标 11 开始，删除三个字符并插入 5 个新字符
@@ -533,7 +547,7 @@ s.replace(11, 3, "Fifth");   // 从下标 11 开始，删除三个字符并插�
 #### 9.5.3 string搜索操作
 - string 类提供了 **6 个不同的搜索函数**，每个函数有 4 个重载版本。
    - 搜索操作返回 **string::size_type 类型，代表匹配位置的下标**。
-   - ==**搜索失败则返回一个名为 string::npos 的 static 成员，值初始化为 -1**==。因为 npos 是一个 unsigned 类型，这个初始值意味着 npos 等于任何 string 最大的可能大小。
+   - **搜索失败则返回一个名为 string::npos 的 static 成员，值初始化为 -1**。因为 npos 是一个 unsigned 类型，这个初始值意味着 npos 等于任何 string 最大的可能大小。
 
 注意：find 和 rfind 查找的是给定的整个 args，而剩下的查找的是给定的 args 中包含的任意一个字符。
 ```cpp
@@ -550,7 +564,7 @@ s2,pos       // 字符串
 cp,pos       // 以空字符结尾的 c 风格字符串
 cp,pos,n     // c 风格字符串的前 n 个字符
 ```
-- ==**使用 pos 循环查找所有 str 包含的字符的位置**==
+- **`使用 pos 循环查找所有 str 包含的字符的位置`**
 ```cpp
 string::size_type pos = 0;
 while((pos=s.find_first_of(str,pos)) != string::npos ){
@@ -560,7 +574,8 @@ while((pos=s.find_first_of(str,pos)) != string::npos ){
 
 
 #### 9.5.4 compare函数
-用于比较两个字符串，**可以是比较整个或一部分字符串**,==**也可以字符串与c风格字符数组比较** ==。
+用于比较两个字符串，**可以是比较整个或一部分字符串**,**`也可以字符串与c风格字符数组比较`** 。
+
 **小于返回负数，大于返回正数，等于返回零**
 ```cpp
 int F = s.compare(s2);
@@ -574,6 +589,7 @@ int F = s.compare(pos1,n1,cp,n2);
 
 #### 9.5.5 数值转换
 有多个函数可以实现数值数据与标准库 string 之间的转换
+
 stoi 中要转换的 string 的第一个非空白符必须是**数字或 "+"、"-"、"."**
 ```cpp
 to_string(val);  // 数值转换为字符串
@@ -584,7 +600,7 @@ stol();stoul();stoll();stoull();
 stof(s, p);      // 返回 s 的起始子串的数值。
 stod();stold();
 ```
-==**例子**==
+**`例子`**
 ```cpp
 string s2 = "pi = 3.14";
 double d = stod(s2.substr(s2.find_first_of("+-.0123456789")));
@@ -620,6 +636,7 @@ stack<int, vector<int>> sta;  // 定义基于 vector 实现的 stack
 
 ##### 栈适配器：stack
 **stack类型定义在`头文件stack`中**
+
 栈的操作
 ```cpp
 s.pop();
@@ -634,6 +651,7 @@ swap(s, s2); s.swap(s2);
 
 ##### 队列适配器：queue
 **queue 和 priority_queue 都定义在`头文件 queue` 中**
+
 队列适配器的操作
 ```cpp
 q.pop();          // 删除 queue 的首元素
@@ -650,8 +668,11 @@ swap(q,q2);q.swap(q2);
 queue 为先进先出队列。
 ##### 优先队列：priority_queue
 **queue 和 priority_queue 都定义在==头文件 queue== 中**
+
 创建 stack, queue, priority_queue 时都可以用一个顺序容器作为第二个类型参数;
+
 此外创建 priority_quque 时还可以额外传递第三个参数：一个函数对象来决定如何对 priority_queue 中的元素进行排序。
+
 - **大根堆和小根堆**
  priority_queue 默认采用的是 less<Type> ，默认情况下 q.top() 是最大的元素，即大根堆。
 ```cpp
@@ -1185,6 +1206,10 @@ PS C:\Users\cormorant\Desktop\v\C\cpp\cppPrimer\U9> cd "c:\Users\cormorant\Deskt
 ```
     
 ### t9_52
+>使用stack 处理括号化的表达式。当你看到一个左括号，将其记录下来。当你在一个左括号之后看到一个右括号，从stack中pop对象，直至遇到左括号，将左括号也一起弹出栈。然后将一个值（括号内的运算结果）push 到栈中，表示一个括号化的（子）表达式已经处理完毕，被其运算结果所替代。
+
+```cpp
+    
 //设运算符只有加减法和括号以减少优先级处理的步骤
 #include<iostream>
 #include<deque>
@@ -1330,3 +1355,4 @@ while (p < exp.size())
     cout << "表达式结果: " << so.top().v <<endl;
     return 0;
 }
+```
