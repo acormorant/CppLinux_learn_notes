@@ -18,12 +18,14 @@
 # 顺序容器
 
 ## 问题
-1. ==基本的顺序容器有 6 种，分别是什么？哪几种容器算是通用型？存储结构分别是什么？==
- vector, deque, list, forward_list, string, array。vector, deque, list 算是最通用的通用型。两个 list 是链式结构，其他都是顺序结构
+1. **`基本的顺序容器有 6 种，分别是什么？哪几种容器算是通用型？存储结构分别是什么？`**
 
-2. ==顺序容器的通用操作有哪些?==
- **empty(), size(), swap(), clear(), "=", assign()**
-  (注意：仅限于顺序容器通用，适配器不行)--------例外：forward_list 不支持 size()
+   vector, deque, list, forward_list, string, array。vector, deque, list 算是最通用的通用型。两个 list 是链式结构，其他都是顺序结构
+
+2. **`顺序容器的通用操作有哪些?`**
+
+   **empty(), size(), swap(), clear(), "=", assign()**
+   (注意：仅限于顺序容器通用，适配器不行)--------例外：forward_list 不支持 size()
 
 3. **vector 特点是什么，支持哪些操作?**
  vector 支持快速随机访问、在尾部快速插入删除。
@@ -51,50 +53,63 @@
  - insert(p,t)
 
 6. forward_list 特点是什么，支持哪些操作?
+
  forward_list 支持正向顺序访问，在任何位置插入删除都很快。
 
 7. array 特点是什么，支持哪些操作?
- string 支持快速随机访问、在尾部快速插入删除。
 
-8. string 特点是什么，支持哪些操作?
  array 支持快速随机访问，是固定大小数组。
 
+8. string 特点是什么，支持哪些操作?
+
+ string 支持快速随机访问、在尾部快速插入删除。
+
 9. vector, deque, list 应用场景分析:
+
  一般用 vector，需要头部插入删除用 deque，需要中间插入删除用 list。**元素数量多且单个元素小不用 list**，空间开销很重要不用 list，需要随机访问用 vector,deque。
 
 10. 基本的顺序容器适配器有 3 种，分别是什么？默认底层容器分别是什么？
- queue, priority_queue, stack ，==queue 和 stack 的底层容器是 deque，priority_queue 的底层容器是 vector==
 
-11. 适配器有哪些共同特点？
- ==适配器不能用底层容器的操作。**适配器不支持迭代器。** clear() 是通过迭代器实现的，因此**适配器都不支持 clear()。**==
+ queue, priority_queue, stack ，**`queue 和 stack 的底层容器是 deque，priority_queue 的底层容器是 vector`**
+
+11. **适配器有哪些共同特点**？
+
+ 适配器不能用底层容器的操作。**适配器不支持迭代器。** clear() 是通过迭代器实现的，因此**适配器都不支持 clear()。**
 
 12. queue 特点是什么，支持哪些操作?
+
 queue：先进先出。支持 front(), back(), push(), pop(), **emplace(args) ；empty(), size(), swap()；**
 
 13. priority_queue 特点是什么，支持哪些操作?
+
 priority_queue：最高优先级出。支持 top(), push(), pop(), emplace(args) ；**empty(), size(), swap()；**
 
 14. stack 特点是什么，支持哪些操作?
+
 stack：先进后出。支持 top(), push(), pop()，**emplace(args) ；empty(), size(), swap()；**
 
 ## 问题
 1. 所有的迭代器都支持什么操作？
+
 都支持 ++iter，除了 forward_list 都支持 --iter，包括顺序容器和关联容器
 
 2. array 使用时要注意什么？
+
 array 的类型和大小是捆绑的，定义: ` array<int, 10> arr;`
 
 3. swap 操作的特点: 
+
 对于 array 以外的其他容器，swap 只交换数据结构，不交换元素，所以非常快，运行常数时间。对于 array，swap 交换两个容器的元素值
 
 4. max_size 返回值是什么?
+
 返回一个大于等于该容器所能容纳最大元素数量的值
 
 5. **可以向容器添加元素的三类函数分别是什么，分别可以用于哪种情况？**
  push, emplace, insert 三类：
   - ==**push：包括 push_back(), push_front() 两种，单纯的 push() 操作只用于三种顺序容器适配器，一次只能添加一个元素**==
   - emplace：包括 emplace(), emplace_back(), emplace_front() 三种，用参数来构造元素，一次只能添加一个元素
-  - insert：包括 insert() 一种，==传入一个迭代器指明位置，再迭代器前插入，可以添加单个元素、多个相同元素、某迭代器范围内的所有元素，花括号列表==
+  - insert：包括 insert() 一种，**`传入一个迭代器指明位置，再迭代器前插入，可以添加单个元素、多个相同元素、某迭代器范围内的所有元素，花括号列表`**
 
 6. 如何在一个位置反复插入元素
 ```cpp
@@ -104,50 +119,55 @@ array 的类型和大小是捆绑的，定义: ` array<int, 10> arr;`
 7. 访问容器元素的三类操作分别是什么，用于哪种情况？
  - begin(),end() 返回迭代器
  - **front(), back() 返回元素的引用，back() 返回尾元素**
- - ==**vec .at()，vec[] ：下标访问法。at() 函数可以检查下标越界。可用于 vector，deque，string，array**==
+ - **`vec.at()，vec[] ：下标访问法。at() 函数可以检查下标越界。可用于 vector，deque，string，array`**
 
 8. 删除元素的三类操作分别是什么？用于哪种情况？
  - pop 类：包括 pop_front(), pop_back() 两种，都返回 void 。单纯的 pop 操作只用于顺序容器适配器。
- - erase 类：包括 erase() 一种，接受迭代器做参数，可以删除一个元素或一个迭代器范围。返回删除元素之后的元素的迭代器
+ - erase 类：包括 erase() 一种，接受迭代器做参数，可以删除一个元素或一个迭代器范围。**返回删除元素之后的元素的迭代器**
  - clear：清空整个容器。不能用于适配器。
 
-9. farword_list 有哪些操作？
- farword_list 的操作有 ==**erase_after(iter), insert_after(), emplace_after() 。before_begin() 返回一个首前迭代器。**==
+9. **farword_list 有哪些操作？**
+
+ farword_list 的操作有 **`erase_after(iter), insert_after(), emplace_after() 。before_begin() 返回一个首前迭代器。`**
 
 10. 控制容器大小的操作有哪些
+
 resize() ：调整容器大小。reserve()：为vector 和 string 预分配内存；capacity(), shrink_to_fit() 
 
 ## 问题
 1. 获取 string 对象的子序列的方法
+
  使用**s.substr(pos,n) 来获取从下标 pos 处开始的长度为 n 的子序列**
 
-2. ==**搜索 string 中的字符**==
+2. **`搜索 string 中的字符`**
+
 **string 定义了 6 个相应功能的函数。 find(), rfind(), find_first_of() 等。**
 
 3. 字符串与数值之间进行转换的函数。
+
 to_string() 与 stoi(), stod(), stol 等
 
 ## 第九章 顺序容器
 ### 9.1 顺序容器概述
-所有容器都提供**高效的==动态内存==管理**
+所有容器都提供**高效的`动态内存`管理**
 - **几种顺序容器**
  **vector**：支持快速随机访问。在**尾部**插入/删除速度快。
- **deque**：支持快速随机访问。==在**头尾**插入/删除都很快。==
- **list**：==**双向链表**==。只支持 ==**双向顺序访问**==。在任何位置插入/删除都很快。
+ **deque**：支持快速随机访问。在**头尾**插入/删除都很快。
+ **list**：**`双向链表`**。只支持 **`双向顺序访问`**。在任何位置插入/删除都很快。
  **forward_list**：单项链表。**只支持单向顺序访问**。在任何位置插入/删除都很快。
- **string**：支持快速随机访问。**在==尾部==插入/删除速度快**。
+ **string**：支持快速随机访问。**在`尾部`插入/删除速度快**。
  **array**：**固定大小数组**。支持快速随机访问。
 
 可以发现：vector\deque\string\array 都是**顺序存储结构**。 list 是**链式存储结构**。但是他们都是顺序容器
 
-list 的==额外内存开销==相比其他大很多。
-array 是一种==比内置数组更好==的类型。
-==**farward_list 没有 size 操作**==。这种列表与最好的手写链表性能一样好。
-**新标准库容器的性能至少与同类手写数据结构一样好或更好，==c++ 程序应该使用标准库容器。==**
+- list 的`额外内存开销`相比其他大很多。
+- array 是一种**`比内置数组更好`**的类型。
+- **`farward_list 没有 size 操作`**。这种列表与最好的手写链表性能一样好。
+- **新标准库容器的性能至少与同类手写数据结构一样好或更好，`c++ 程序应该使用标准库容器。`**
 
 - 容器选择:
   - **vector/list/deque** 三种容器的比较：
-  > 1. ==如果没有特殊的理由，使用 vector 是最好的选择==
+  > 1. **`如果没有特殊的理由，使用 vector 是最好的选择`**
   > 2. 如果**有很多小的元素**，不用 list
   > 3. 如果**空间开销很重要**，不用 list
   > 4. 如果需要在**中间**位置插入/删除，用 list
@@ -209,7 +229,8 @@ c.crbegin();c.crend();
 ```
 
 #### 9.2.1 迭代器
- 用两个迭代器表示的范围都是 ==**左闭合空间**==，即 [begin,end)  ：**如果 begin 和 end 相等，则为空**。
+ 用两个迭代器表示的范围都是 **`左闭合空间`**，即 [begin,end), **如果 begin 和 end 相等，则为空**。
+ 
  **所有迭代器都可以递增，forward_list 不可以递减**
 ```cpp
 vector<int>::iterator iter = vec.begin();   // 准确定义迭代器的方式。
@@ -228,7 +249,7 @@ begin是重载函数,依赖容器类型是否为const类型而返回对应迭代
 #### 9.2.4 容器定义和初始化
 - **将一个容器初始化为另一个容器的拷贝**
   1. 直接拷贝整个容器(类型及其元素类型必须匹配)
-  2. **拷贝由一个迭代器对组成的元素范围(==不要求元素类型相同也不要求元素类型相同,只要能将要拷贝的元素转换为要初始化的容器的元素类型即可==)**
+  2. **拷贝由一个迭代器对组成的元素范围`(不要求元素类型相同也不要求容器类型相同,只要能将要拷贝的元素转换为要初始化的容器的元素类型即可)`**
 ```cpp
 vector<const char*> articles = {"a", "an", "the"};
 list<string> words(articles.begin(), articles.end());  // 正确， const char* 类型可以转换成 string类型
@@ -250,9 +271,9 @@ list<string> words(articles.begin(), articles.end());  // 正确， const char* 
 
 #### 9.2.5 赋值和swap
 - **“=”赋值**
-  对容器使用赋值运算符（除 array 外），将会使该容器的 ==**所有元素**== 被替换。**如果两个容器大小不等，赋值后都与右边容器的原大小相同。**
+  对容器使用赋值运算符（除 array 外），将会使该容器的 **`所有元素`** 被替换。**如果两个容器大小不等，赋值后都与右边容器的原大小相同。**
   **array要求赋值前大小就必须一样。**
-- ==**assign**==
+- **`assign`**
   assign 是赋值操作，可以用于顺序容器。
   “=” 要求两边类型相同， assign 要求只要**可以转换**即可
   **assian适用于内置数组**
@@ -264,15 +285,16 @@ list<string> words(articles.begin(), articles.end());  // 正确， const char* 
  //'操作等价于'
  lst.clear();
  lst.insert(lst.begin(), n, t);
- lst.assign(ia,ia+ sizeof(ia)/sizeof(ia[0]) ); //数组的总内存空间除以每个数据需要占的内存空间可以获得数组的长度
+ 
+ lst.assign(ia, ia+sizeof(ia)/sizeof(ia[0]) ); //数组的总内存空间除以每个数据需要占的内存空间可以获得数组的长度
 ```
 [对应练习: t9_14](#t9_14)
 [assign内置数组应用](#t9_26)
 - **swap**
    - 对 array ，swap 交换两个 array 中的元素值。**指针、引用和迭代器绑定的元素不变（值变）**。
-   - **对于其他容器，==swap 不交换元素，只交换数据结构，因此 swap 操作非常快==。**
+   - **对于其他容器，`swap 不交换元素，只交换数据结构，因此 swap 操作非常快`。**
    - 对于 string，swap 后，指针、引用和迭代器会失效。**对于其他容器，交换后指针指向了另一个容器的相同位置。**
-   - ==建议统一使用 swap(a,b)==，而非 a.swap(b)
+   - **建议统一使用 swap(a,b)**，而非 a.swap(b)
    - 对于 array，swap 操作的时间与元素数目成正比，**对于其他容器，swap 操作的时间是常数**。
 
 
@@ -291,7 +313,7 @@ max_size 返回一个大于或等于该类型容器所能容纳的最大元素�
 ### 9.3 顺序容器操作
 #### 9.3.1 添加元素
 主要是三类函数：**push、emplace 和 insert。**
-==注意**向 vector、string 或 deque 插入元素会使所有指向容器的迭代器、引用和指针失效**。==
+注意 **`向 vector、string 或 deque 插入元素会使所有指向容器的迭代器、引用和指针失效`**。
 添加的都是元素的拷贝，不是元素本身。
 头尾添加返回 void，**中间添加返回指向新添加元素的迭代器**
 - **push**
@@ -302,18 +324,18 @@ max_size 返回一个大于或等于该类型容器所能容纳的最大元素�
  c.push_front(t);  // 头部添加一个 t
 ```
 - **emplace(c++11 新标准)**
- push 和 insert 传递的是元素类型的对象，** emplace 则将==参数==传递给元素类型的构造对象。**
+ push 和 insert 传递的是元素类型的对象，**emplace 则将`参数`传递给元素类型的`构造对象`。**
  即 **emplace参数即为元素类型构造函数的参数**，因此一般可以为空（默认初始化）。
- emplace 返回值是指向添加元素的迭代器
+ **emplace 返回值是指向添加元素的迭代器**
 ```cpp
  c.emplace_back(args);  // 在尾部添加一个由 args 构建的元素
  c.emplace_front(args); // 在头部添加一个由 args 构建的元素
- c.emplace(p,args);     // 在迭代器 p 所指元素之前添加一个由 args 构建的元素
+ c.emplace(p,args);     // 在迭代器 p 所指元素 之前 添加一个由 args 构建的元素
 ```
 
 - **insert**
-  insert 返回值是指向添加的元素中第一个元素的迭代器
-  **由于迭代器可能指向容器尾后不存在元素的位置,且在容器开始位置插入元素是很有用的功能,所以==insert函数将元素插入到迭代器所指定的位置之前==**
+  **`insert 返回值是指向添加的元素中第一个元素的迭代器`**
+  **由于迭代器可能指向容器尾后不存在元素的位置,且在容器开始位置插入元素是很有用的功能,所以insert函数将元素插入到迭代器所指定的位置`之前`**
 ```cpp
  c.insert(p, t);       // 在迭代器 p 所指元素之前添加一个 t
  c.insert(p, n, t);    // 在迭代器 p 所指元素之前添加 n 个 t
@@ -321,7 +343,7 @@ max_size 返回一个大于或等于该类型容器所能容纳的最大元素�
  c.insert(p, il);      // 在迭代器 p 所指元素之前添加花括号列表
 ```
 - **应用**
-  ==在一个位置反复插入元素==
+  **`在一个位置反复插入元素`**
 ```cpp
  while(cin>>word)
     iter = lst.insert(iter,word);
@@ -331,18 +353,18 @@ max_size 返回一个大于或等于该类型容器所能容纳的最大元素�
 
 
 #### 9.3.2 访问元素
-==访问容器应首先确保容器非空==
+**访问容器应首先确保容器非空**
 - **begin/end**
  begin()/end() 返回迭代器
 - **front/back**
- front()/back() 返回元素的==**引用**==
+ front()/back() 返回元素的 **`引用`**
 ```cpp
  c.front();
  c.back();   //返回的是尾元素的引用（注意不同于尾后迭代器）
 ```
 - **at/下标**
   **可以快速随机访问的容器都可以使用下标**。
-  ==使用下标一定要保证下标不越界，可以用 at 函数。**当下标越界，at 函数会抛出一个 out_of_range 异常**==
+  **使用下标一定要保证下标不越界，`可以用 at 函数。当下标越界，at 函数会抛出一个 out_of_range 异常`**
 ```cpp
  c[n]       //返回下标为 n 的元素的引用
  c.at(n);   //返回下标为 n 的元素的引用
@@ -359,7 +381,7 @@ max_size 返回一个大于或等于该类型容器所能容纳的最大元素�
 
 #### 9.3.3 删除元素
 **三类删除操作：pop/ erase/ clear**
-头尾删除返回 void，**特定位置删除返回被删除元素之后元素的迭代器**
+头尾删除返回 void，**`特定位置删除返回被删除元素之后元素的迭代器`**
 **vector/string 不支持 pop_front，forward_list 不支持 pop_back。**
 forward_list 有自己特殊版本的 erase。
 ```cpp
@@ -381,8 +403,8 @@ c.erase(b, e);  // !!!!! 删除迭代器范围 [b, e) 内的元素 若e本身就
 
 
 #### 9.3.4 特殊的forward_list操作
-forward_list 是**单向链表**，添加和删除操作都会**同时改变前驱和后继结点**，因此一般的添加和删除都不适用于 forward_list,因此原因,**forward_list中添加删除操作通过改变给定元素==之后的元素==来完成的。**
-forward_list 定义了 ==**首前迭代器**== ：**before_begin()** 可以返回首前迭代器，用来删除首元素。
+forward_list 是**单向链表**，添加和删除操作都会**同时改变前驱和后继结点**，因此一般的添加和删除都不适用于 forward_list,因此原因,**forward_list中添加删除操作通过改变给定元素`之后的元素`来完成的。**
+forward_list 定义了 **首前迭代器** ：**before_begin()** 可以返回首前迭代器，用来删除首元素。
 ```cpp
 lst.insert_after(p,t);     // 在迭代器 p 之后添加一个元素 t；insert_after 与 insert 的差别只在于是插入在元素前还是元素后
 lst.insert_after(p,n,t);
@@ -413,13 +435,14 @@ lst.resize(5);         // 把后面 20 个元素都删除
 #### 9.3.6 容器操作可能使迭代器失效
 ==添加和删除元素都可能使指针、引用、迭代器失效。使用失效的指针、引用、迭代器是很严重的错误。==
 - **编写改变容器的循环程序**
- 必须保证**每次改变容器后都==更新迭代器==**。
+ 必须保证**每次改变容器后都`更新迭代器`**。
    - insert 和 erase 都会返回迭代器，更新很容易。
-     **调用 erase 后，==不需要==递增迭代器，调用 insert 后，需要==递增两次==。**
-- **==不要保存 end() 返回的迭代器==**
-  push、pop、首尾 emplace 操作**都没有返回值，但是都会改变尾后迭代器**，因此不能保存 end() 返回值。
-  **（也因此速度会略慢，当不改变容器大小时，采用下标更快）**
+     **调用 erase 后，`不需要`递增迭代器，调用 insert 后，需要`递增两次`。**
+- **`不要保存 end() 返回的迭代器`**
+    push、pop、首尾 emplace 操作**都没有返回值，但是都会改变尾后迭代器**，因此不能保存 end() 返回值。
+    **（也因此速度会略慢，当不改变容器大小时，采用下标更快）**
 [对应练习: t9_31](#t9_31)
+
 
 ### 9.4 vector对象是如何增长的
 vector 和 string 是连续存储的，为了避免每增加一个元素就要重新分配一次空间，在每次必须获取新的内存空间时，**通常会分配比新的空间需求更大的内存空间**。容器预留多的空间作为备用。
@@ -438,7 +461,7 @@ vector 和 string 是连续存储的，为了避免每增加一个元素就要�
 
 
 ### 9.5 额外的string操作
-string 提供了一些额外的操作，主要是用于 **==C风格字符数组==** 和 **==下标访问==** 两方面
+string 提供了一些额外的操作，主要是用于 **`C风格字符数组`** 和 **`下标访问`** 两方面
 
 #### 9.5.1 构造string的其他方法
 ##### 构造string的基础方法
@@ -450,7 +473,7 @@ C c1(c2.begin(), c2.end());
 C c1{a, b, c, ...};   
 ```
 ##### 构造string的其他方法
-- string 的构造函数可以**接受一个 ==string 或 const char*== 参数用来指定开始位置，然后接受一个==计数值==用来指定范围。**
+- string 的构造函数可以**接受一个 `string 或 const char*` 参数用来指定开始位置，然后接受一个`计数值`用来指定范围。**
 - **如果没有传递计数值用来确定范围，拷贝操作遇到空字符停止（因此此时必须要有空字符）**
 - 开始位置必须保证是在拷贝对象的范围内，**计数值也没有上限要求**，当计数值指定的范围大于拷贝对象，就**最多拷贝到结尾**。
 ```cpp
@@ -458,7 +481,7 @@ string s(cp, n);          // cp 是一个字符数组，s 是 cp 指向的字符
 string s(s2, pos2);       // s2 是一个 string 对象，s 是从 s2 的下标 pos 处开始到最后的字符的拷贝。
 string s(s2, pos2, len2); // s 是从 s2 的下标 pos2 处开始的 len2 个字符的拷贝。
 ```
-- **从vector<char>初始化string**
+- **`从vector<char>初始化string`**
 ```cpp
 vector<char> vc;
 string s(vc.data(),vc.size());
@@ -495,7 +518,7 @@ const char* cp = "stately,plump Buck";
 s.assign(cp, 7);             // 用从 cp 开始的前 7 个字符向 s 赋值
 s.insert(s.size(), cp+7);    // 将从 cp+7 开始到 cp 末尾的字符插入到 s 末尾
 ```
-##### ==append 和 replace==
+##### append 和 replace
 **append：在 string 末尾进行插入操作的简写形式**
 **==replace==：调用 erase 和 insert 操作的简写形式**
 ```cpp
@@ -572,7 +595,7 @@ double d = stod(s2.substr(s2.find_first_of("+-.0123456789")));
 
 ### 9.6 容器适配器
 标准库定义了三个**顺序容器适配器:stack、queue、priority_queue**。
-==**适配器**是一种机制，是某种事物的行为看起来像另一种事物==。
+**适配器**是一种机制，是某种事物的行为看起来像另一种事物。
 ##### 适配器类型
 ```cpp
 size_type;
@@ -581,7 +604,7 @@ container_type;  // 实现适配器的底层容器类型。
 ```
 ##### 初始化操作
 默认情况下，**stack 和 queue 是基于 deque** 实现的， **priority_queue 是在 vector 之上实现**的。
-因此**可以直接用一个 ==deque 来初始化 stack 和 queue==。注意：是直接使用容器对象，不是使用迭代器表示的范围**。
+因此**可以直接用一个 `deque 来初始化 stack 和 queue`。注意：是直接使用容器对象，不是使用迭代器表示的范围**。
 priority_queue 不能使用无序的 vector 初始化。
 ```cpp
 deque<int> deq;
@@ -591,10 +614,12 @@ stack<int> sta(deq);  // 用 deq 初始化 sta
 ```cpp
 stack<int, vector<int>> sta;  // 定义基于 vector 实现的 stack
 ```
-- stack 可以构造于 ***vector, list, deque*** 之上。
+- stack 可以构造于 **vector, list, deque** 之上。
 - queue 可以构造于 **list, deque** 之上。
 - priority_queue 可以构造于 **vector、deque** 之上。
+
 ##### 栈适配器：stack
+**stack类型定义在`头文件stack`中**
 栈的操作
 ```cpp
 s.pop();
@@ -605,8 +630,10 @@ s.size();
 s.empty();
 swap(s, s2); s.swap(s2);
 ```
+[*对应练习: t9_52](#t9_52)
+
 ##### 队列适配器：queue
-**queue 和 priority_queue 都定义在==头文件 queue== 中**
+**queue 和 priority_queue 都定义在`头文件 queue` 中**
 队列适配器的操作
 ```cpp
 q.pop();          // 删除 queue 的首元素
@@ -1156,3 +1183,150 @@ PS C:\Users\cormorant\Desktop\v\C\cpp\cppPrimer\U9> cd "c:\Users\cormorant\Deskt
 1999年2月1日
 */
 ```
+    
+### t9_52
+//设运算符只有加减法和括号以减少优先级处理的步骤
+#include<iostream>
+#include<deque>
+#include<stack>
+#include<string>
+using namespace std;
+
+enum obj_type{LP,RP,ADD,SUB,VAL};
+struct obj
+{
+   obj(obj_type type,double value=0){t=type;v=value;} 
+   obj_type t;
+   double   v; 
+};
+
+inline void skipws(string& s,string::size_type& p){
+   p = s.find_first_not_of(" ",p);
+}
+
+inline void new_val(stack<obj> &so,double v){
+//a）若栈空或栈顶是左括号，则v是第一个运算数，直接压栈即可。
+//b）否则，v前必须是一个运算符，再之前是另一个运算数v，从栈顶弹出这两项，将计算结果压栈即可；否则，就抛出一个“缺少运算符”异常。
+   if( so.empty() || so.top().t == LP){          //空栈或左括号 !!!判断空栈必须在前否则向空栈运行so.top().t == LP语句会导致程序异常退出且不报错!!! 
+      so.push(obj(VAL,v));
+      cout << "push " << v <<endl;
+   }
+   else if(so.top().t == ADD|| so.top().t == SUB){
+      obj_type type = so.top().t;
+      so.pop();
+      //if(so.top().t != VAL)throw  多余;运算符前是否是运算数 的判断应该交给运算符入栈时代码段
+      if(type == ADD){
+        cout << "pop +" <<endl;
+        cout << "pop " <<so.top().v <<endl;
+        v +=so.top().v;
+        so.pop();
+        so.push(obj(VAL,v)); 
+        cout << "push "<< v <<endl;
+      }
+      else{
+        cout << "pop -" <<endl;
+        cout << "pop " <<so.top().v <<endl;
+        v =so.top().v - v;
+        so.pop();
+        so.push(obj(VAL,v)); 
+        cout << "push "<< v <<endl;
+      }
+   }
+   else{
+      throw invalid_argument("缺少运算符");
+   }
+}
+
+int main(){
+/*
+1．读入了一个运算数v。
+a）若栈空或栈顶是左括号，则v是第一个运算数，直接压栈即可。
+b）否则，v前必须是一个运算符，再之前是另一个运算数v＇，从栈顶弹出这两项，将计算结果压栈即可；否则，就抛出一个“缺少运算符”异常。
+
+2．读入了一个左括号，直接压栈。
+
+3．读入了一个运算符，
+a）若栈空或栈顶不是一个运算数，则抛出一个“缺少运算数”异常。注意，若运算符之前是一个右括号，之前也已处理完毕，栈顶是其计算结果，仍应该是运算数，不影响此逻辑。
+b）否则，运算符压栈。
+
+4．读入了一个右括号，
+a）若栈空，表明之前没有与之配对的左括号，抛出“未匹配右括号”异常。
+b）若栈顶是左括号，表明括号对之间无表达式，抛出“空括号”异常。
+c）若栈顶不是运算数，表明括号内缺少一个运算数，抛出一个异常。
+d）**弹出此运算数 v，若栈空或栈顶不是左括号，仍抛出“未匹配右括号”异常：否则弹出左括号，把v作为新运算数，执行1中的逻辑**
+(边输入边计算,所以输入右括号时若无异常括号内运算已结束,栈顶只剩一个运算数)。
+
+5．以上均不是，则出现了非法输入，会在转换为数值时产生异常。
+
+6．当字符串处理完毕后，判断栈中是否有且仅有一个运算数，若是，此值即为表达式运算结果，输出它；否则，表达式非法。
+
+**值得注意的是，为了在栈中保存括号、运算符和运算数三类对象，程序中定义了枚举类型obj＿type。栈中每个对象都保存了类型t和数值v**（如果t是VAL的话）。
+*/
+stack<obj> so;
+string exp;
+string::size_type p=0;
+string::size_type q;
+double v;
+
+cout << "请输入表达式:  ";
+getline(cin,exp);
+
+while (p < exp.size())
+{   
+    skipws(exp, p);
+    if(exp[p] == '('){
+        so.push(obj(LP));
+        cout << "push (" <<endl;
+        p++;
+    }
+    else if(exp[p] == '+'||exp[p] == '-'){
+        if(so.top().t !=VAL || so.empty()){ //空栈或之前不是运算数
+            throw invalid_argument("缺少运算数");
+        }
+
+        if(exp[p] == '+'){
+            so.push(obj(ADD));
+            cout << "push +" <<endl;
+            p++;
+        }else{
+            so.push(obj(SUB));
+            cout << "push -" <<endl;
+            p++;
+        }
+
+    }
+    else if(exp[p] == ')'){
+        p++;
+        if(so.empty()){
+            throw invalid_argument("未配对右括号");
+        }
+        if(so.top().t == LP){
+            throw invalid_argument("空括号");
+        }
+        if(so.top().t != VAL ){
+            throw invalid_argument("缺少运算数");
+        }
+        v = so.top().v;
+        so.pop();
+        cout << "pop "<< v <<endl;
+        if(so.top().t != LP|| so.empty()){
+            throw invalid_argument("未配对右括号");
+        }
+        so.pop();
+        cout << "pop (" <<endl;
+        //so.push(obj(VAL,v)); 可能有其他错误
+        new_val(so,v);
+    }
+    else{
+        v = stod(exp.substr(p),&q);//返回 子串 的起始子串的数值。参数 p 用来保存 从下标p开始的子串 中第一个非数值字符的下标，默认为 0，即不保存下标。
+        p += q; 
+        new_val(so,v);
+    }
+}
+    //字符串处理完毕后，判断栈中是否有且仅有一个运算数，若是，此值即为表达式运算结果，输出它；否则，表达式非法。
+    if(so.empty() || so.size()!= 1 || so.top().t != VAL){
+        throw invalid_argument("表达式非法");
+    }
+    cout << "表达式结果: " << so.top().v <<endl;
+    return 0;
+}
