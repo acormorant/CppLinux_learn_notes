@@ -8,7 +8,7 @@
    从程序执行到静态变量定义开始，到程序执行结束。
 3. 函数的三要素
    返回类型、函数名、形参类型
-4. ==函数使用引用形参时的注意事项==
+4. **`函数使用引用形参时的注意事项`**
    **尽量使用常量引用形参，const 对象、字面值、需要类型转换的对象都只能传递给常量引用形参，不能传递给普通引用形参。**
 5. 处理可变形参（即可以传递不同数量实参的形参）的方法
    可以使用 initailizer_list 类型或省略符形参（基本不用）
@@ -128,7 +128,7 @@ void print(const int*);
 void print(const int[]);
 void print(const int[10]);//三种声明等价，数字 10 没有什么实际影响
 ```
-==编译器只检查传入的实参是否为 const int* 类型。==
+**`编译器只检查传入的实参是否为 const int* 类型。`**
 - **使用数组做形参确保数组访问不越界的方法：**
 1. 使用一个结束标记指定数组已结束，典型代表为 C 风格字符串
 2. 传递指向数组首元素和尾后元素的指针
@@ -168,13 +168,13 @@ return 0;
 
 ## 含有可变形参的函数
 **处理不同数量实参的主要方法有两种：**
-1. 如果所有实参类型相同，传递一个 ==**initializer_list**== 类型
+1. 如果所有实参类型相同，传递一个 **`initializer_list`** 类型
 2. 使用**省略符形参**，它可以传递可变数量的实参，注意它一般仅用于与 C 函数交互的接口程序
 
 **initializer_list 形参:**
 initializer_list 也是一种模板类型，**定义在同名的头文件中**。
 initializer_list 与 vector 容器大致相同，但是**它的元素都是常量值**。
-**==initializer_list 对象只能使用花括号初始化。==**
+**`initializer_list 对象只能使用花括号初始化。`**
 C++ 里的 vector 等各类容器使用列表初始化时本质上都是通过一个采用了 initializer_list 形参的构造函数进行初始化的。
 ```cpp
 initializer_list<int> initlst;//默认初始化:空列表
@@ -216,8 +216,8 @@ string &shorterString(string &s1,string &s2){
     return const_cast<string &>(r);
 }
 ```
-先强制转换为const string引用,然后调用shorterString的const版本
-再将其返回值转换为普通引用.
+**先强制转换为const string引用,然后调用shorterString的const版本
+再将其返回值转换为普通引用.**
 
 [拓展: C++标准转换运算符const_cast ](https://www.cnblogs.com/ider/archive/2011/07/22/cpp_cast_operator_part2.html)
 
