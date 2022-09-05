@@ -115,21 +115,17 @@ while(!cin.fail());// 意义同上。
       input.open(str1)
      )
   ```
-   - arvg[1]中内容为两种时都不成功.
+   - arvg[1]和argv[2]中内容为两种时成功.
     ```cpp 
       (
       argv[1] is: InFile.txt
+      argv[2] is: outfile.txt
       //argv[1] is: infile.txt
       )
+     // PS C:\Users\cormorant\Desktop\v\C\cpp\cppPrimer\U8> g++ .\t8_6_yinyong.cpp -o t8_6.exe
+     // PS C:\Users\cormorant\Desktop\v\C\cpp\cppPrimer\U8> .\t8_6.exe infile.txt outfile.txt
      ```
-- ==未解决错误==
-  - **arvg[1]中内容为两种时都不成功.**
-    ```cpp
-     (
-        argv[1] is: InFile.txt
-      //argv[1] is: infile.txt
-     )
-	```
+- 未解决错误
   - **使用接受istream&类型函数时无法调用其对应ifstream对象**
     ```cpp
      std::istream &read(std::istream &is, Sales_data&item)

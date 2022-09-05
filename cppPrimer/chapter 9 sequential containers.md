@@ -509,10 +509,10 @@ string s2 = s1.substr(6);    // 返回从下标 6 开始到最后的子序列
 string 支持顺序容器的 assign、insert、erase 操作，此外还增加了两个额外的操作
 1. **接受下标版本的 insert 和 erase**
 
-3. 接受 C 风格字符数组的 insert 和 assign
+2. 接受 C 风格字符数组的 insert 和 assign
 
-5. **append 和 replace 函数**
-6. 
+3. **append 和 replace 函数**
+   
 ##### 接受下标的 insert 和 erase
 - insert 和 erase 接受下标的版本**返回的是一个指向 s 的引用**（区别于迭代器版本返回指向第一个插入字符的迭代器）。
 - insert 的所有版本都是第**一部分参数为 pos，后面的参数为待插入的字符**
