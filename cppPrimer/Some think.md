@@ -17,6 +17,8 @@ if(a & 1) //a为奇数时为真 偶数时为假
 ```
 ### 终端中文乱码
 [VSCode中解决终端的中文乱码问题](https://www.cnblogs.com/stu-jyj3621/p/12815080.html#:~:text=VSCode%E7%BB%88%E7%AB%AF%E5%85%B6%E5%AE%9E%E8%B0%83%E7%94%A8%E7%9A%84%E6%98%AFcmd.exe%EF%BC%8C%E6%89%80%E4%BB%A5%E5%BD%93%E8%BF%99%E9%87%8C%E5%87%BA%E7%8E%B0%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E7%9A%84%E6%97%B6%E5%80%99%E8%A6%81%E8%A7%A3%E5%86%B3%E7%9A%84%E6%98%AFcmd%E7%9A%84%E7%BC%96%E7%A0%81%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98%E3%80%82,VScode%E9%BB%98%E8%AE%A4%E6%98%AFUTF-8%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%EF%BC%8C%E6%88%91%E4%BB%AC%E8%A6%81%E5%81%9A%E7%9A%84%E6%98%AF%E6%9B%B4%E6%94%B9VScode%E7%9A%84%E9%BB%98%E8%AE%A4%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E4%B8%BAGBK%E3%80%82)
+### initializer_list
+[c++ initializer_list详解](https://blog.csdn.net/fengxinlinux/article/details/72614874)
 -------
 
 # 2.CONST
