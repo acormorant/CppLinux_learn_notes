@@ -41,7 +41,7 @@ auto iter = find_if(vec.begin(),vec.end(),可调用对象)；
 
 **`auto iter = back_inserter(vec);`**
 
-1. **谓词是什么？有几种？**
+9. **谓词是什么？有几种？**
     
 **`谓词是一个可调用表达式,返回一个可用作条件的值`**,有一元谓词和二元谓词两种.
 
@@ -85,10 +85,12 @@ auto wc= find_if(txtVec.begin(),txtVex.end(),bind(check_size(),_1,sz));
 ```
 
 18. 插入迭代器常用于什么地方？
+    
 插入迭代器常用于泛型算法中，可以用来向一个序列中插入元素，解决了泛型算法不能向序列添加元素的问题。
 **`常用于形参为alg(beg, end, dest, other args);的泛型算法; `**
 
-19. 区分插入器和插入迭代器
+19.  区分插入器和插入迭代器
+  
 **插入器是 back_inserter, front_inserter, inserter 等函数，这些函数会返回一个插入迭代器。**
 
 20. 什么是流迭代器？有什么用
@@ -689,7 +691,7 @@ remove_copy_if(v1.begin(), v1.end(), back_inserter(v2), [](int i){return i%2;});
 ```
 
 
-### 10.6 特定容器算法
+## 10.6 特定容器算法
 链表类型 list 和 forward_list 定义了几个成员函数形式的算法。**`它们定义了独有的 sort, merge, remove, reverse 和 unique。`**
 >**通用版本的 sort 要求随机访问迭代器，而 list 和 forward_list 分别提供双向迭代器和前向迭代器，因此不能用于 list 和 forward_list。**
 >其他链表类型定义的算法的通用版本可以用于链表，但是性能差很多，应该**优先使用成员函数版本**的算法。
