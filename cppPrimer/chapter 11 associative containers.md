@@ -228,7 +228,7 @@ pair<string, int> p{"LiLin", 17};
 pair<string, int> p = {"LiLin", 17};
 
 '使用 make_pair'
-auto p = make_pari(v1, v2);//pair 的类型根据 v1 和 v2 的类型推断。
+auto p = make_pair(v1, v2);//pair 的类型根据 v1 和 v2 的类型推断。
 pair 操作
 p.first  //返回 p 的第一个成员
 p.second //返回 p 的第二个成员

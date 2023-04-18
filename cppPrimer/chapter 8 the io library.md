@@ -50,7 +50,7 @@ while(!cin.fail());// 意义同上。
 
 5. 使用操纵符 unitbuf 设置流的内部状态来清空缓冲区。
      - flush刷新缓冲区，但不输出任何额外的字符；
-     - ends向缓冲区插入一个空字符，然后刷新缓冲区。
+     - [ends](https://www.cnblogs.com/MrLJC/p/3749782.html)向缓冲区插入一个空字符，然后刷新缓冲区。
      - unitbuf操纵符,告诉流在每次输出操作后都进行一次flush操作.
 
 
@@ -241,12 +241,12 @@ strm.str();   // 返回 strm 中保存的 str 的拷贝
 strm.str(s);  // 将 string s 拷贝到 strm 中，返回 void
 ```
 >strm.clear();／／重复使用字符串流时，每次都要调用clear
+- istringstream的构造函数原形如下：
+    istringstream::istringstream(string str);
+    它的作用是从string对象str中读取字符。
 
 ### 8.3.2 使用ostringstream
 - 当我们逐步构造输出，希望最后一起打印时，ostringstream是很有用的。
-理解：
-1. istringstream 是输入流，即读操作，要将流中的内容输入到字符串中，因此**定义和使用 istringstream 时流内必须有内容，所以在使用前要提前在流内保存一个字符串.**
-2. ostringstream 是输出流，即写操作，将字符串中的内容输出到流中，ostringstream **可以在定义时即在流中保存一个字符串，也可以通过 << 操作符获得字符串。**
 
 ### T8_10 
 **将来自一个文件中的行保存在一个vector＜string＞中。然后使用一个istringstream从vector 读取数据元素，每次读取一个单词。**

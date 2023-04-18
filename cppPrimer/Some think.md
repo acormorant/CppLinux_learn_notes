@@ -1,4 +1,5 @@
 [《C++ primer》学习笔记整理](https://www.cnblogs.com/xsqblogs/p/14681536.html)
+[浙大数据结构MOOC 陈越/何钦铭 笔记整理](https://www.cnblogs.com/L2021111/p/14276144.html)
 
 # 1.杂记
 ### 指针与引用的不同：
@@ -19,6 +20,16 @@ if(a & 1) //a为奇数时为真 偶数时为假
 [VSCode中解决终端的中文乱码问题](https://www.cnblogs.com/stu-jyj3621/p/12815080.html#:~:text=VSCode%E7%BB%88%E7%AB%AF%E5%85%B6%E5%AE%9E%E8%B0%83%E7%94%A8%E7%9A%84%E6%98%AFcmd.exe%EF%BC%8C%E6%89%80%E4%BB%A5%E5%BD%93%E8%BF%99%E9%87%8C%E5%87%BA%E7%8E%B0%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E7%9A%84%E6%97%B6%E5%80%99%E8%A6%81%E8%A7%A3%E5%86%B3%E7%9A%84%E6%98%AFcmd%E7%9A%84%E7%BC%96%E7%A0%81%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98%E3%80%82,VScode%E9%BB%98%E8%AE%A4%E6%98%AFUTF-8%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%EF%BC%8C%E6%88%91%E4%BB%AC%E8%A6%81%E5%81%9A%E7%9A%84%E6%98%AF%E6%9B%B4%E6%94%B9VScode%E7%9A%84%E9%BB%98%E8%AE%A4%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E4%B8%BAGBK%E3%80%82)
 ### initializer_list
 [c++ initializer_list详解](https://blog.csdn.net/fengxinlinux/article/details/72614874)
+### 遍历unordered_map<char,int> position;
+```cpp
+        for (auto [_, pos]: position) {
+            if (pos != -1 && pos < first) {
+                first = pos;
+            }
+        }
+```
+### #
+- n & (n−1)，其预算结果恰为把 n 的二进制位中的最低位的 1 变为 0 之后的结果。
 -------
 
 # 2.CONST
@@ -79,10 +90,13 @@ k = 10
 -------
 
 ## 2.2. 指针和CONST
+[顶层const和底层const](https://zhuanlan.zhihu.com/p/161560391)
 ### 指向常量的指针(pointer to const)(底层const)
 类似于reference to const,不能用于改变其所指对象的值(可通过其他途径修改),可指向非常量对象.
 ### const指针(const pointer)(顶层const)
 常量指针必须初始化,不变的是指针本身的值(地址)而非指向的对象,故可以用于改变其所指的值.(不可以指向常量,除非是指向常量的常量指针(const pointer to const)).
+- const int* pInt; 和 int *const pInt = &someInt;
+  顶层表示指针本身是个常量，底层表示指针所指向的对象是个常量。
 ### C++ 类型别名为指针类型时，const的修饰情况
 如果类型别名指代的是复合类型，那么把它用到声明语句中产生的效果会和预想的不一样（预想的就是把别名替换为所指代的内容，再判断其数据这  类型）.
 **使用typedef**
@@ -400,7 +414,7 @@ const_cast <string&> (s);// 将 s 转换回非常量引用
 reinterpret_cast
 它依赖于机器，使用门槛很高，且使用时充满风险，**不要用它**。
 
-## 5. Chpt 语句 部分笔记
+## 5. Chpt5 语句 部分笔记
 ### 5.1 范围for语句
 范围 for 语句用来**遍历容器或其他序列的所有元素。**
 ```cpp
@@ -417,6 +431,130 @@ declaration 定义一个能从序列中元素转换过来的**变量（不是迭
 **每次迭代都会重新定义循环控制变量**，并将其初始化为序列的下一个值。
 	
 范围 for 语句不能改变序列的元素数量。因为**其预存了 end() 的值**，改变元素数量后 end() 的值就可能失效了。
+
+## leetCode杂谈
+### 重建二叉树.07
+> [知道前序中序遍历(不含重复的数字)重建树](https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/solutions/103063/mian-shi-ti-07-zhong-jian-er-cha-shu-by-leetcode-s/)
+1. 递归
+   哈希表快速定位中序遍历中根节点位置,分治为左右子树求解
+2. **迭代**
+   对于前序遍历中的任意两个连续节点u和v，根据前序遍历的流程，我们可以知道u和v只有两种可能的关系：
+     - **v是u的左儿子**,这是因为在遍历到u之后，下一个遍历的节点就是u的左儿子，即v；
+     - **u没有左儿子，并且v是u的某个祖先节点（或者u本身）的右儿子**,如果u没有左儿子，那么下一个遍历的节点就是u的右儿子。如果u没有右儿子，我们就会向上回溯，直到遇到第一个有右儿子（且u不在它的右儿子的子树中）的节点ua，那么v就是ua的右儿子。
+
+### 剪绳子.14
+>[将长为n绳子分为m段,求每段长度乘积最大值](https://leetcode.cn/problems/jian-sheng-zi-ii-lcof/description/)
+- [数学证明按长度3等分时取最大值](https://leetcode.cn/problems/jian-sheng-zi-ii-lcof/solutions/106190/mian-shi-ti-14-ii-jian-sheng-zi-iitan-xin-er-fen-f/)
+- [n值较大时,使用快速幂节省时间](https://blog.csdn.net/qq_19782019/article/details/85621386?spm=1001.2014.3001.5506)
+
+### 从 1 到最大的 n 位数.17
+>[按顺序打印出从 1 到最大的 n 位十进制数](https://leetcode.cn/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/description/)
+- 考虑大数问题, 大数的表示使用string类型;
+- 生成的列表实际上是n位0-9的全排列 ，因此可避开进位操作，通过递归生成数字的 String 列表。
+- 数第一位不为0
+    - void dfs(int x,int n) 表示生成长度为n的数字，正在确定第x位
+    - int i = x==0?1:0; x为0表示左边第一位数字，不能为0
+```cpp
+    vector<string> res;
+    string cur;
+    vector<char> nums{'0','1','2','3','4','5','6','7','8','9'};
+    void dfs(int x,int n){
+        if(x == n){
+            res.emplace_back(cur);
+            return;
+        }
+        int i = x==0?1:0;
+        for(;i<nums.size();i++){
+            cur.push_back(nums[i]);
+            dfs(x+1, n);
+            cur.pop_back();
+        }
+    }
+```
+
+### 正则表达式匹配
+>[实现一个函数用来匹配包含'. '和'*'的正则表达式。模式中的字符'.'表示任意一个字符，而' * '表示它前面的字符可以出现任意次（含0次）。](https://leetcode.cn/problems/zheng-ze-biao-da-shi-pi-pei-lcof/description/)
+- **动态规划**:
+   1. 状态定义： 设动态规划矩阵 dp ， dp[i][j] 代表字符串 s 的前 i 个字符和 p 的前 j 个字符能否匹配。
+
+   2. 转移方程:
+    ```cpp
+   dp[0][0] = true; //代表空字符可以匹配 ,
+   dp[i][j] = if(p[j-1]=='*') dp[i][j-2] || (dp[i-1][j] && (s[i-1] == p[i-2] || p[i-2] == '.'));
+              else            dp[i-1][j-1] && (p[j-1] == '.' || s[i-1] = p[j-1]);
+    ```
+
+   3. 初始化： 需要先初始化 dp 矩阵首行，以避免状态转移时索引越界。
+         `dp[0][j] = dp[0][j - 2] 且 p[j - 1] = '*'`： 首行 s 为空字符串，因此当 p 的偶数位为 * 时才能够匹配（即让 p 的奇数位出现 0 次，保持 p 是空字符串）。因此，循环遍历字符串 p ，步长为 2（即只看偶数位）。
+```cpp
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int n = s.size(), m = p.size();
+        vector<vector<bool>> dp(n+1, vector<bool>(m+1, false));
+        dp[0][0] = true;
+        for(int j=2;j<=m;j+=2)
+            if(dp[0][j-2] && p[j-1]=='*')dp[0][j] = true;//首行 s 为空字符串，因此当p的偶数位为*时才能够匹配
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(p[j-1]=='*' && j>1) dp[i][j] = dp[i][j-2] 
+                || (dp[i-1][j]  && (s[i-1] == p[j-2] || p[j-2] == '.'));
+                else dp[i][j] = dp[i-1][j-1] && (p[j-1] == '.' || s[i-1] == p[j-1]);
+            }
+        }
+        return dp[n][m];
+    }
+};
+```
+
+### 表示数值的字符串
+>[请实现一个函数用来判断字符串是否表示数值（包括整数和小数）](https://leetcode.cn/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/description/)
+
+[基础: enum枚举类型详解](https://www.runoob.com/w3cnote/cpp-enum-intro.html)
+- **有限状态自动机**
+    确定有限状态自动机（以下简称「自动机」）是一类计算模型。它包含一系列状态，这些状态中：
+    有一种特殊的状态，被称作「初始状态」。
+    还有一系列状态被称为「接受状态」，它们组成了一个特殊的集合。其中，一个状态可能既是「初始状态」，也是「接受状态」。
+    **起初，这个自动机处于「初始状态」。随后，它顺序地读取字符串中的每一个字符，并根据当前状态和读入的字符，按照某个事先约定好的「转移规则」，从当前状态转移到下一个状态；当状态转移完成后，它就读取下一个字符。当字符串全部读取完毕后，如果自动机处于某个「接受状态」，则判定该字符串「被接受」；否则，判定该字符串「被拒绝」。**
+
+    - 注意：如果输入的过程中某一步转移失败了，即不存在对应的「转移规则」，此时计算将提前中止。在这种情况下我们也判定该字符串「被拒绝」。
+    - 一个自动机，总能够回答某种形式的「对于给定的输入字符串 S，判断其是否满足条件 P」的问题。在本题中，条件 P 即为「构成合法的表示数值的字符串」。
+    - 自动机驱动的编程，可以被看做一种暴力枚举方法的延伸：它穷尽了在任何一种情况下，对应任何的输入，需要做的事情。
+    - 自动机在计算机科学领域有着广泛的应用。在算法领域，它与大名鼎鼎的字符串查找算法「KMP」算法有着密切的关联；在工程领域，它是实现「正则表达式」的基础。
+
+- 在此题中状态转移条件通过unordered_map<state, unordered_map<charType, state>> transfer保存,并通过以下程序遍历字符串得到其最终状态
+   ```cpp
+        state cur_state = STATE_INITIAL;
+        for(int i=0;i<s.size();i++){
+            charType cur_chT = to_charType(s[i]);
+            if(transfer[cur_state].find(cur_chT) == transfer[cur_state].end())return false;
+            else cur_state = transfer[cur_state][cur_chT];
+        }
+   ```
+
+### 树的子结构
+>[输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)](https://leetcode.cn/problems/shu-de-zi-jie-gou-lcof/description/)
+- 思路:
+    若树B是树A的子结构，则子结构的根节点可能为树A的任意一个节点。因此，判断树B是否是树A的子结构，需完成以下两步工作：
+    1. **先序遍历树A中的每个节点nA**（对应函数 isSubStructure(A, B)）
+    2. 判断树A中以nA为根节点的子树 是否包含树B。（对应函数 recur(A, B)）
+- ==recur(A, B) 函数==：
+    1. 终止条件: 
+        - B空,说明树B已匹配完成（越过叶子节点），因此返回true；
+        - A空,说明已经越过叶子结点, 返回false;
+        - AB值不同,匹配失败,返回false;
+    2. 返回值：
+        **recur(A->left, B->left) && recur(A->right, B->right);**
+- ==isSubStructure(A, B) 函数==：
+    1. 特例处理： 当树A为空或树B为空时，直接返回false；
+    2. 返回值： 若树 BBB 是树 AAA 的子结构，则必满足以下三种情况之一，因此用或 || 连接；
+        - 以节点A为根节点的子树包含树B，对应 recur(A, B)；
+        - 树B是树A左子树的子结构，对应 isSubStructure(A.left, B)；
+        - 树B是树A右子树的子结构，对应 isSubStructure(A.right, B)；
+    >**其二三条情况递归实质是进行先序遍历**
+
+
+
 
 
 
